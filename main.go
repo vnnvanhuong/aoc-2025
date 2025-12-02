@@ -12,5 +12,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Secret entrance: %d\n", password)
+	fmt.Printf("Day 1: secret entrance: %d\n", password)
 }

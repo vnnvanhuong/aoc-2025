@@ -1,9 +1,16 @@
 package day1
 
 import (
-	"bufio"
 	"os"
 	"strconv"
+	"strings"
+)
+
+type direction string
+
+const (
+	Left  direction = "L"
+	Right direction = "R"
 )
 
 func Process(path string) (int, error) {
@@ -13,7 +20,6 @@ func Process(path string) (int, error) {
 	}
 
 	return password(rotations), nil
-
 }
 
 func password(rotations []string) int {
@@ -22,11 +28,11 @@ func password(rotations []string) int {
 
 	for _, r := range rotations {
 		direction, steps := parse(r)
-		if direction == "L" {
+		if direction == Left {
 			p = ((p-steps)%100 + 100) % 100
 		}
 
-		if direction == "R" {
+		if direction == Right {
 			p = (p + steps) % 100
 		}
 
@@ -38,25 +44,17 @@ func password(rotations []string) int {
 	return count
 }
 
-func parse(rotation string) (direction string, turns int) {
-	direction = string(rotation[0])
+func parse(rotation string) (d direction, turns int) {
+	d = direction(string(rotation[0]))
 	turns, _ = strconv.Atoi(rotation[1:])
 	return
 }
 
-func load(path string) ([]string, error) {
-	file, err := os.Open(path)
+func load(filePath string) ([]string, error) {
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	defer file.Close()
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	return lines, scanner.Err()
+	return strings.Split(string(content), "\n"), nil
 }
