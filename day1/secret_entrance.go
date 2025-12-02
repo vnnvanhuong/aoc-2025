@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-func Process() (int, error) {
-	rotations, err := load("day1/input.txt")
+func Process(path string) (int, error) {
+	rotations, err := load(path)
 	if err != nil {
 		return -1, err
 	}

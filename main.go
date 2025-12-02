@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	password, err := day1.Process()
+	password, err := day1.Process("day1/input.txt")
 	if err != nil {
 		panic(err)
 	}
