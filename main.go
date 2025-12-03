@@ -7,10 +7,6 @@ import (
 )
 
 func main() {
-	password, err := day1.Process("day1/input.txt")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Day 1: secret entrance: %d\n", password)
+	fmt.Println("Day 1: Secret Entrance")
+	day1.Solve()
 }

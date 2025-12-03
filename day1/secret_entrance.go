@@ -1,9 +1,10 @@
 package day1
 
 import (
+	"bufio"
+	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 type direction string
@@ -13,13 +14,14 @@ const (
 	Right direction = "R"
 )
 
-func Process(path string) (int, error) {
-	rotations, err := load(path)
+func Solve() {
+	rotations, err := load("day1/input.txt")
 	if err != nil {
-		return -1, err
+		panic(fmt.Errorf("failed to load input: %w", err))
 	}
 
-	return password(rotations), nil
+	fmt.Println("-> part 1: ", password(rotations))
+	fmt.Println("-> part 2: ", password2(rotations))
 }
 
 func password(rotations []string) int {
@@ -44,6 +46,33 @@ func password(rotations []string) int {
 	return count
 }
 
+func password2(rotations []string) int {
+	p := 50
+	count := 0
+
+	for _, r := range rotations {
+		direction, steps := parse(r)
+		if direction == Left {
+			if p == 0 {
+				count += steps / 100
+			}
+
+			if p != 0 && steps >= p {
+				count += 1 + (steps-p)/100
+			}
+
+			p = ((p-steps)%100 + 100) % 100
+		}
+
+		if direction == Right {
+			count += (p + steps) / 100
+			p = (p + steps) % 100
+		}
+	}
+
+	return count
+}
+
 func parse(rotation string) (d direction, turns int) {
 	d = direction(string(rotation[0]))
 	turns, _ = strconv.Atoi(rotation[1:])
@@ -51,10 +80,18 @@ func parse(rotation string) (d direction, turns int) {
 }
 
 func load(filePath string) ([]string, error) {
-	content, err := os.ReadFile(filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	return strings.Split(string(content), "\n"), nil
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines, scanner.Err()
 }
