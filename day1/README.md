@@ -1,4 +1,4 @@
-# Day 1
+# Day 1: Secret Entrance
 
 ## Understand the problem
 p = 50

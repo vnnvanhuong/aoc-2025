@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	fmt.Println("Day 1: Secret Entrance")
+	fmt.Println("--- Day 1: Secret Entrance ---")
 	day1.Solve()
 }
