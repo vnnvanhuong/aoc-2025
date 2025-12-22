@@ -51,30 +51,24 @@ type Range struct {
 func TotalOfInvalidIDs(ranges []Range) int {
     total := 0
 
+    // 11-22
     for _, r := range ranges {
-        for i := r.Min; i <= r.Max; i++ {
-            s, _ := strconv.Aiot(i)
+        for i := r.Min; i <= r.Max; i++ { 
+            s, _ := strconv.Aiot(i) // 13
             if len(s) % 2 != 0 {
                 continue
             }
 
-            l := s[:len(s)/2]
-            r := s[len(s)/2 +1: len(s)]
+            l := s[:len(s)/2] // 1
+            r := s[len(s)/2+1: len(s)] // 2
             if l != r {
                 continue
             }
 
-            total += i
+            total += i // 1
         }
     }
 
     return total
 }
 ```
-
-## Dry run
-
-
-## Calculate time and space complexity
-
-## Optimize
