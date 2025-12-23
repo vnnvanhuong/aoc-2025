@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -20,7 +21,50 @@ func Solve() {
 	}
 
 	count1 := countInvalidIDs(ranges)
-	fmt.Println("count one", count1)
+	fmt.Println("-> part 1", count1)
+
+	count2 := countInvalidIDs2(ranges)
+	fmt.Println("-> part 1", count2)
+}
+
+func countInvalidIDs2(ranges []Range) int {
+	total := 0
+
+	for _, r := range ranges {
+		for i := r.Min; i <= r.Max; i++ {
+			s := strconv.Itoa(i)
+			n := len(s)
+
+			for p := 1; p <= n/2; p++ {
+				if n%p != 0 {
+					continue
+				}
+
+				if isRepeatingPattern(s, p) {
+					total += i
+					break
+				}
+			}
+		}
+	}
+
+	return total
+}
+
+func isRepeatingPattern(s string, p int) bool {
+	pattern := s[:p]
+
+	regexPattern := "^" + regexp.QuoteMeta(pattern) + "$"
+	regex := regexp.MustCompile(regexPattern)
+
+	for i := 0; i < len(s); i += p {
+		segment := s[i : i+p]
+		if !regex.MatchString(segment) {
+			return false
+		}
+	}
+
+	return true
 }
 
 func countInvalidIDs(input []Range) int {

@@ -54,7 +54,7 @@ func TotalOfInvalidIDs(ranges []Range) int {
     // 11-22
     for _, r := range ranges {
         for i := r.Min; i <= r.Max; i++ { 
-            s, _ := strconv.Aiot(i) // 13
+            s := strconv.Itoa(i) // 13
             if len(s) % 2 != 0 {
                 continue
             }
@@ -72,3 +72,65 @@ func TotalOfInvalidIDs(ranges []Range) int {
     return total
 }
 ```
+## Part 2: Logical solution
+
+998-1012 -> [999, 1000, ..., 1010, ..., 1011, 1012]
+12341234 -> 1234
+123123132 -> 123
+1212121212 -> 12
+1111111 -> 1
+
+Hmm... So complicated!
+
+It seems people using regular expression to solve this problem
+
+Refer to https://www.reddit.com/r/adventofcode/comments/1pc2rcn/2025_day_2_part_2_its_impossible_what_do_we_do/
+
+```go
+package day2
+
+type Range struct {
+    Min int
+    Max int
+}
+
+func TotalOfInvalidIDs(ranges []Range) int {
+    total := 0
+
+    for _, r := range ranges {
+        for i := r.Min; i <= r.Max; i++ { 
+            s := strconv.Itoa(i) // 13
+            n := len(s)
+
+            for p := 1; p <= n/2; p++ {
+                if n % p != 0 {
+                    continue
+                }
+
+                if isRepeatingPattern(s, p) {
+                    total += i
+                }
+            }
+        }
+    }
+
+    return total
+}
+
+func isRepeatingPattern(s string, patternLen int) bool {
+    pattern := s[:patternLen]
+
+    regexPattern := "^" + regexp.QuoteMeta(pattern) + "$"
+    regex := regexp.MustCompile(regexPattern)
+
+    for i := 0; i < len(s) ; i += patternLen {
+        segment := s[i:i+paternLen]
+        if !regex.MatchString(segment) {
+            return false
+        }
+    }
+
+    return true
+}
+```
+
