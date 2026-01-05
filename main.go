@@ -5,6 +5,7 @@ import (
 
 	"nguyenvanhuong.vn/aoc2025/day1"
 	"nguyenvanhuong.vn/aoc2025/day2"
+	"nguyenvanhuong.vn/aoc2025/day3"
 )
 
 func main() {
@@ -13,4 +14,7 @@ func main() {
 
 	fmt.Println("--- Day 2: Gift Shop ---")
 	day2.Solve()
+
+	fmt.Println("--- Day 3: Lobby ---")
+	day3.Solve()
 }

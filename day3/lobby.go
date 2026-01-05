@@ -1,6 +1,20 @@
 package day3
 
-import "strconv"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
+
+func Solve() {
+	banks, err := load("day3/input.txt")
+	if err != nil {
+		panic(fmt.Errorf("failed to load input: %w", err))
+	}
+
+	fmt.Println("-> part 1: ", totalMaxjoltage(banks))
+}
 
 func totalMaxjoltage(banks []string) int {
 	total := 0
@@ -19,4 +33,21 @@ func totalMaxjoltage(banks []string) int {
 	}
 
 	return total
+}
+
+func load(filePath string) ([]string, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines, scanner.Err()
 }
